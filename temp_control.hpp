@@ -17,7 +17,7 @@
 #define TEMP_CONTROL_SUCCESS                (0)
 #define TEMP_CONTROL_ERR                    (-1)
 #define TEMP_CONTROL_ERR_INV_INPUTS         (-2)
-#define TEMP_CONTROL_ERR_NOT_INITALIZED     (-2)
+#define TEMP_CONTROL_ERR_NOT_INITALIZED     (-3)
 
 /*******************************************************/
 /*                 ENUMS and STRUCTS                   */
@@ -35,6 +35,13 @@
  *          Otherwise refer to @ref Return Values
 */
 int32_t temp_control_init(void);
+
+/** @brief De-initializes the temp_control module.
+ *  @param void
+ *  @return TEMP_CONTROL_SUCCESS for success 
+ *          Otherwise refer to @ref Return Values
+*/
+int32_t temp_control_deinit(void);
 
 /** @brief  Adjusts the required minimum and maximum values of the temperature.
  *  @note   The maximum temperature value must be >= the Minmum temperature value.
