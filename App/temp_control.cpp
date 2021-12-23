@@ -3,7 +3,7 @@
 /*                 Includes                            */
 /*******************************************************/
 #include "temp_control.hpp"
-#include "temp_sensor.hpp"
+#include "error_numbers.h"
 #include <cstdio>
 
 /*******************************************************/
@@ -59,22 +59,22 @@ static int32_t gs32_settings_max_temp;
  *  @return TEMP_CONTROL_SUCCESS for success 
  *          Otherwise refer to @ref Return Values
 */
-int32_t temp_control_init(void)
+int32_t temp_control_init(temp_sensor& temp_sensor_obj)
 {
-    int32_t s32_return_value = TEMP_CONTROL_ERR;
+    int32_t s32_return_value = ERROR_DEFAULT;
     if(!gb_initialized)
     {
         /* TODO: initialization sequence */
-        //s32_return_value = temp_sensor_init();
-        s32_return_value = TEMP_SENSOR_SUCCESS;
-        if(TEMP_SENSOR_SUCCESS == s32_return_value)
+        s32_return_value = temp_sensor_obj.init();
+        //s32_return_value = TEMP_SENSOR_SUCCESS;
+        if(SUCCESS == s32_return_value)
         {
             gb_initialized = true;
             LOG_INFO("Initialization Succeeded.\r\n");
         }
         else
         {
-            LOG_ERROR("Initialization Failed.\r\n");
+            LOG_ERROR("Initialization Failed with error %d\r\n", s32_return_value);
         }
 
     }
@@ -85,7 +85,7 @@ int32_t temp_control_init(void)
          * We will return success here to allow this module to be used by multiple upper layer 
          */
 
-        s32_return_value = TEMP_CONTROL_SUCCESS;
+        s32_return_value = SUCCESS;
     }
 
     return s32_return_value;
@@ -98,13 +98,13 @@ int32_t temp_control_init(void)
 */
 int32_t temp_control_deinit(void)
 {
-    int32_t s32_return_value = TEMP_CONTROL_ERR;
+    int32_t s32_return_value = ERROR_DEFAULT;
     if(gb_initialized)
     {
         /* TODO: deinitialization sequence */
 
         gb_initialized = false;
-        s32_return_value = TEMP_CONTROL_SUCCESS;
+        s32_return_value = SUCCESS;
         
         LOG_INFO("De-initialized\r\n");
     }
@@ -115,7 +115,7 @@ int32_t temp_control_deinit(void)
          * We will return success here to allow this module to be used by multiple upper layer 
          */
 
-        s32_return_value = TEMP_CONTROL_SUCCESS;
+        s32_return_value = SUCCESS;
     }
 
     return s32_return_value;
@@ -129,7 +129,7 @@ int32_t temp_control_deinit(void)
 */
 int32_t temp_control_set_min_max_temp(int32_t s32_min_val, int32_t s32_max_val)
 {
-    int32_t s32_return_value = TEMP_CONTROL_ERR;
+    int32_t s32_return_value = ERROR_DEFAULT;
 
     if(gb_initialized)
     {
@@ -140,16 +140,16 @@ int32_t temp_control_set_min_max_temp(int32_t s32_min_val, int32_t s32_max_val)
 
             /* TODO: update the current action */
 
-            s32_return_value = TEMP_CONTROL_SUCCESS;
+            s32_return_value = SUCCESS;
         }
         else
         {
-            s32_return_value = TEMP_CONTROL_ERR_INV_INPUTS;
+            s32_return_value = ERROR_INV_INPUTS;
         }
     }
     else
     {
-        s32_return_value = TEMP_CONTROL_ERR_NOT_INITALIZED;
+        s32_return_value = ERROR_NOT_INITALIZED;
     }
 
     return s32_return_value;

@@ -7,10 +7,12 @@ set(Sources
 )
 
 include_directories(../App)
+include_directories(../HAL/temp_sensor ../HAL/temp_cool_heat_act ../common)
 
 add_executable(${This} ${Sources})
 target_link_libraries( ${This} PUBLIC
     gtest_main
+    gmock_main
     temp_control
 )
 

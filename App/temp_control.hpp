@@ -6,18 +6,12 @@
 /*                 Includes                            */
 /*******************************************************/
 #include <stdint.h>
+#include "temp_sensor.hpp"
 
 /*******************************************************/
 /*                 MACROS                              */
 /*******************************************************/
-/**
- * @brief Return Values
- */
 
-#define TEMP_CONTROL_SUCCESS                (0)
-#define TEMP_CONTROL_ERR                    (-1)
-#define TEMP_CONTROL_ERR_INV_INPUTS         (-2)
-#define TEMP_CONTROL_ERR_NOT_INITALIZED     (-3)
 
 /*******************************************************/
 /*                 ENUMS and STRUCTS                   */
@@ -34,7 +28,7 @@
  *  @return TEMP_CONTROL_SUCCESS for success 
  *          Otherwise refer to @ref Return Values
 */
-int32_t temp_control_init(void);
+int32_t temp_control_init(temp_sensor& temp_sensor_obj);
 
 /** @brief De-initializes the temp_control module.
  *  @param void
