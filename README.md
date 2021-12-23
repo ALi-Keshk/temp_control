@@ -1,0 +1,1 @@
+This is a Temperature control module written in C++ for learning and training purposes
