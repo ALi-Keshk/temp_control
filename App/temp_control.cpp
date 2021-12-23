@@ -3,6 +3,7 @@
 /*                 Includes                            */
 /*******************************************************/
 #include "temp_control.hpp"
+#include "temp_sensor.hpp"
 #include <cstdio>
 
 /*******************************************************/
@@ -64,11 +65,18 @@ int32_t temp_control_init(void)
     if(!gb_initialized)
     {
         /* TODO: initialization sequence */
+        //s32_return_value = temp_sensor_init();
+        s32_return_value = TEMP_SENSOR_SUCCESS;
+        if(TEMP_SENSOR_SUCCESS == s32_return_value)
+        {
+            gb_initialized = true;
+            LOG_INFO("Initialization Succeeded.\r\n");
+        }
+        else
+        {
+            LOG_ERROR("Initialization Failed.\r\n");
+        }
 
-        gb_initialized = true;
-        s32_return_value = TEMP_CONTROL_SUCCESS;
-
-        LOG_INFO("Initialized\r\n");
     }
     else
     {
