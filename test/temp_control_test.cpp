@@ -1,12 +1,37 @@
 #include <gtest/gtest.h>
 #include "../temp_control.hpp"
 
-TEST(ExampleTest, DemonstrateGTestMacros)
+struct temp_control_test : public ::testing::Test
 {
-    int32_t s32_return_value = temp_control_init();
-    EXPECT_EQ(TEMP_CONTROL_SUCCESS, s32_return_value);
-    
+    virtual void SetUp() override
+    {
+        /* Initialize the module */
+        ASSERT_EQ(TEMP_CONTROL_SUCCESS, temp_control_init());
+    }
+
+    virtual void TearDown() override
+    {
+        /* De-initialize the module */
+        ASSERT_EQ(TEMP_CONTROL_SUCCESS, temp_control_deinit());
+    }
+};
+
+TEST_F(temp_control_test, set_min_max_test)
+{
+    /* Test valid +ve values */
     EXPECT_EQ(TEMP_CONTROL_SUCCESS, temp_control_set_min_max_temp(20, 30));
     EXPECT_EQ(TEMP_CONTROL_SUCCESS, temp_control_set_min_max_temp(20, 20));
-    EXPECT_EQ(TEMP_CONTROL_ERR_INV_INPUTS, temp_control_set_min_max_temp(20, 19));
+
+    /* Test valid -ve values */
+    EXPECT_EQ(TEMP_CONTROL_SUCCESS, temp_control_set_min_max_temp(-2, -1));
+    EXPECT_EQ(TEMP_CONTROL_SUCCESS, temp_control_set_min_max_temp(-2, -2));
+
+    /* Test valid 0 values */
+    EXPECT_EQ(TEMP_CONTROL_SUCCESS, temp_control_set_min_max_temp(0, 0));
+    
+    /* Test invalid +ve values */
+    EXPECT_EQ(TEMP_CONTROL_ERR_INV_INPUTS, temp_control_set_min_max_temp(30, 20));
+
+    /* Test invalid -ve values */
+    EXPECT_EQ(TEMP_CONTROL_ERR_INV_INPUTS, temp_control_set_min_max_temp(-1, -2));
 }
