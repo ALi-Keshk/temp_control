@@ -6,6 +6,8 @@ set(Sources
     temp_control_test.cpp
 )
 
+include_directories(../App)
+
 add_executable(${This} ${Sources})
 target_link_libraries( ${This} PUBLIC
     gtest_main

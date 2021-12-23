@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../App/temp_control.hpp"
+#include "temp_control.hpp"
 
 struct temp_control_test : public ::testing::Test
 {
