@@ -41,29 +41,38 @@
 /*******************************************************/
 /*                 APIs Implementation                 */
 /*******************************************************/
+/* @brief The constructor to the temp_control module.
+ *  @param _temp_sensor_obj reference to temp_sensor object to be used by this class
+ *  @return None
+*/
+temp_control::temp_control(temp_sensor& _temp_sensor_obj) : temp_sensor_obj(_temp_sensor_obj)
+{
+    b_initialized = false;
+    s32_min_temp = 0;
+    s32_max_temp = 0;
+}
 
 /*  @brief Initializes the temp_control module.
  *  @param void
  *  @return TEMP_CONTROL_SUCCESS for success 
  *          Otherwise refer to @ref Return Values
 */
-int32_t temp_control::init(temp_sensor& temp_sensor_obj)
+int32_t temp_control::init(void)
 {
     int32_t s32_return_value = ERROR_DEFAULT;
-    if(!initialized)
+    if(!b_initialized)
     {
         /* TODO: initialization sequence */
         s32_return_value = temp_sensor_obj.init();
         if(SUCCESS == s32_return_value)
         {
-            initialized = true;
+            b_initialized = true;
             LOG_INFO("Initialization Succeeded.\r\n");
         }
         else
         {
             LOG_ERROR("Initialization Failed with error %d\r\n", s32_return_value);
         }
-
     }
     else
     {
@@ -82,18 +91,24 @@ int32_t temp_control::init(temp_sensor& temp_sensor_obj)
 int32_t temp_control::deinit(void)
 {
     int32_t s32_return_value = ERROR_DEFAULT;
-    if(initialized)
+    if(b_initialized)
     {
         /* TODO: deinitialization sequence */
 
-        initialized = false;
-        s32_return_value = SUCCESS;
-        
-        LOG_INFO("De-initialized\r\n");
+        s32_return_value = temp_sensor_obj.deinit();
+        if(SUCCESS == s32_return_value)
+        {
+            b_initialized = false;
+            LOG_INFO("De-Initialization Succeeded.\r\n");
+        }
+        else
+        {
+            LOG_ERROR("De-Initialization Failed with error %d\r\n", s32_return_value);
+        }
     }
     else
     {
-        /* Here, we can return "Already deinitialized error" or return success
+        /* Here, we can return "Already de_initialized error" or return success
          * This depends on the design
          * We will return success here to 
          * allow this method to be called multiple times without returning an error
@@ -115,7 +130,7 @@ int32_t temp_control::set_min_max_temp(int32_t s32_min_val, int32_t s32_max_val)
 {
     int32_t s32_return_value = ERROR_DEFAULT;
 
-    if(initialized)
+    if(b_initialized)
     {
         if(s32_max_val >= s32_min_val)
         {

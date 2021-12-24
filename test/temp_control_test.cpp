@@ -11,30 +11,42 @@ class Mock_temp_sensor: public temp_sensor
 {
 public:
     MOCK_METHOD(int32_t, init, (), (override));
+    MOCK_METHOD(int32_t, deinit, (), (override));
+    MOCK_METHOD(int32_t, get_temp, (int32_t * ps32_temp_value), (override));
 };
 
 
 struct temp_control_test : public ::testing::Test
 {
-    temp_control temp_control_obj;
     Mock_temp_sensor mocked_temp_sensor_obj;
+    temp_control temp_control_obj;
+
+    temp_control_test() : temp_control_obj(mocked_temp_sensor_obj)
+    {
+        
+    }
+
 
     virtual void SetUp() override
     {
         EXPECT_CALL(mocked_temp_sensor_obj, init()).
         Times(1).WillOnce(Return(SUCCESS));
+
         /* Initialize the module */
-        ASSERT_EQ(SUCCESS, temp_control_obj.init(mocked_temp_sensor_obj));
+        ASSERT_EQ(SUCCESS, temp_control_obj.init());
     }
 
     virtual void TearDown() override
     {
+        EXPECT_CALL(mocked_temp_sensor_obj, deinit()).
+        Times(1).WillOnce(Return(SUCCESS));
+
         /* De-initialize the module */
         ASSERT_EQ(SUCCESS, temp_control_obj.deinit());
     }
 };
 
-TEST_F(temp_control_test, set_min_max_test)
+TEST_F(temp_control_test, set_min_max_temp_test)
 {
     /* Test valid +ve values */
     EXPECT_EQ(SUCCESS, temp_control_obj.set_min_max_temp(20, 30));

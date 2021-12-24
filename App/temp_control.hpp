@@ -25,17 +25,25 @@
 class temp_control
 {
 private:
-    bool initialized = false;
+    bool b_initialized;
     int32_t s32_min_temp;
     int32_t s32_max_temp;
+    temp_sensor& temp_sensor_obj;
 
 public:
+    /** @brief The constructor to the temp_control module.
+     *  @param _temp_sensor_obj reference to temp_sensor object to be used by this class
+     *  @return None
+    */
+    temp_control(temp_sensor& _temp_sensor_obj);
+
+
     /** @brief Initializes the temp_control module.
      *  @param void
      *  @return TEMP_CONTROL_SUCCESS for success 
      *          Otherwise refer to @ref Return Values
     */
-    int32_t init(temp_sensor& temp_sensor_obj);
+    int32_t init(void);
 
     /** @brief De-initializes the temp_control module.
      *  @param void
