@@ -34,42 +34,29 @@
 #endif
 
 /*******************************************************/
-/*                 ENUMS and STRUCTS                   */
+/*  private and protected functions Implementation     */
 /*******************************************************/
 
-
-/*******************************************************/
-/*             Global static Variables                 */
-/*******************************************************/
-static bool gb_initialized;
-static int32_t gs32_settings_min_temp;
-static int32_t gs32_settings_max_temp;
-
-/*******************************************************/
-/*             static functions Implementation         */
-/*******************************************************/
 
 /*******************************************************/
 /*                 APIs Implementation                 */
 /*******************************************************/
-
 
 /*  @brief Initializes the temp_control module.
  *  @param void
  *  @return TEMP_CONTROL_SUCCESS for success 
  *          Otherwise refer to @ref Return Values
 */
-int32_t temp_control_init(temp_sensor& temp_sensor_obj)
+int32_t temp_control::init(temp_sensor& temp_sensor_obj)
 {
     int32_t s32_return_value = ERROR_DEFAULT;
-    if(!gb_initialized)
+    if(!initialized)
     {
         /* TODO: initialization sequence */
         s32_return_value = temp_sensor_obj.init();
-        //s32_return_value = TEMP_SENSOR_SUCCESS;
         if(SUCCESS == s32_return_value)
         {
-            gb_initialized = true;
+            initialized = true;
             LOG_INFO("Initialization Succeeded.\r\n");
         }
         else
@@ -80,12 +67,8 @@ int32_t temp_control_init(temp_sensor& temp_sensor_obj)
     }
     else
     {
-        /* Here, we can return "Already initialized error" or return success
-         * This depends on the design
-         * We will return success here to allow this module to be used by multiple upper layer 
-         */
-
-        s32_return_value = SUCCESS;
+        LOG_ERROR("Already Initialized.\r\n");
+        s32_return_value = ERROR_ALREADY_INITALIZED;
     }
 
     return s32_return_value;
@@ -96,14 +79,14 @@ int32_t temp_control_init(temp_sensor& temp_sensor_obj)
  *  @return TEMP_CONTROL_SUCCESS for success 
  *          Otherwise refer to @ref Return Values
 */
-int32_t temp_control_deinit(void)
+int32_t temp_control::deinit(void)
 {
     int32_t s32_return_value = ERROR_DEFAULT;
-    if(gb_initialized)
+    if(initialized)
     {
         /* TODO: deinitialization sequence */
 
-        gb_initialized = false;
+        initialized = false;
         s32_return_value = SUCCESS;
         
         LOG_INFO("De-initialized\r\n");
@@ -112,7 +95,8 @@ int32_t temp_control_deinit(void)
     {
         /* Here, we can return "Already deinitialized error" or return success
          * This depends on the design
-         * We will return success here to allow this module to be used by multiple upper layer 
+         * We will return success here to 
+         * allow this method to be called multiple times without returning an error
          */
 
         s32_return_value = SUCCESS;
@@ -127,16 +111,16 @@ int32_t temp_control_deinit(void)
  *  @return TEMP_CONTROL_SUCCESS for success 
  *          Otherwise refer to @ref Return Values
 */
-int32_t temp_control_set_min_max_temp(int32_t s32_min_val, int32_t s32_max_val)
+int32_t temp_control::set_min_max_temp(int32_t s32_min_val, int32_t s32_max_val)
 {
     int32_t s32_return_value = ERROR_DEFAULT;
 
-    if(gb_initialized)
+    if(initialized)
     {
         if(s32_max_val >= s32_min_val)
         {
-            gs32_settings_min_temp = s32_min_val;
-            gs32_settings_max_temp = s32_max_val;
+            s32_min_temp = s32_min_val;
+            s32_max_temp = s32_max_val;
 
             /* TODO: update the current action */
 
@@ -160,7 +144,7 @@ int32_t temp_control_set_min_max_temp(int32_t s32_min_val, int32_t s32_max_val)
  *  @param void
  *  @return void
 */
-void temp_control_dispatch(void)
+void temp_control::dispatch(void)
 {
     /* read temperature */
     /* read current action */
