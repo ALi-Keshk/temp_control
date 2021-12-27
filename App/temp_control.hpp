@@ -6,7 +6,9 @@
 /*                 Includes                            */
 /*******************************************************/
 #include <stdint.h>
+#include "error_numbers.h"
 #include "temp_sensor.hpp"
+#include "temp_actuator.hpp"
 
 /*******************************************************/
 /*                 MACROS                              */
@@ -29,13 +31,14 @@ private:
     int32_t s32_min_temp;
     int32_t s32_max_temp;
     TempSensor& temp_sensor_obj;
+    TempActuator& temp_actuator_obj;
 
 public:
     /** @brief The constructor to the temp_control module.
      *  @param _temp_sensor_obj reference to temp_sensor object to be used by this class
      *  @return None
     */
-    TempControl(TempSensor& _temp_sensor_obj);
+    TempControl(TempSensor& _temp_sensor_obj, TempActuator& _temp_actuator_obj);
 
 
     /** @brief Initializes the temp_control module.

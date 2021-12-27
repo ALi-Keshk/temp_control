@@ -42,10 +42,11 @@
 /*                 APIs Implementation                 */
 /*******************************************************/
 /* @brief The constructor to the temp_control module.
- *  @param _temp_sensor_obj reference to temp_sensor object to be used by this class
+ *  @param _temp_sensor_obj reference to TempSensor object to be used by this class
+ *  @param _temp_actuator_obj reference to TempActuator object to be used by this class
  *  @return None
 */
-TempControl::TempControl(TempSensor& _temp_sensor_obj) : temp_sensor_obj(_temp_sensor_obj)
+TempControl::TempControl(TempSensor& _temp_sensor_obj, TempActuator& _temp_actuator_obj) : temp_sensor_obj(_temp_sensor_obj), temp_actuator_obj(_temp_actuator_obj)
 {
     b_initialized = false;
     s32_min_temp = 0;
@@ -66,12 +67,20 @@ int32_t TempControl::Init(void)
         s32_return_value = temp_sensor_obj.Init();
         if(SUCCESS == s32_return_value)
         {
-            b_initialized = true;
-            LOG_INFO("Initialization Succeeded.\r\n");
+            s32_return_value = temp_actuator_obj.Init();
+            if(SUCCESS == s32_return_value)
+            {
+                b_initialized = true;
+                LOG_INFO("Initialization Succeeded.\r\n");
+            }
+            else
+            {
+                LOG_ERROR("Initialization Failed (temp actuator) with error %d\r\n", s32_return_value);
+            }
         }
         else
         {
-            LOG_ERROR("Initialization Failed with error %d\r\n", s32_return_value);
+            LOG_ERROR("Initialization Failed (temp sensor) with error %d\r\n", s32_return_value);
         }
     }
     else
@@ -98,12 +107,20 @@ int32_t TempControl::Deinit(void)
         s32_return_value = temp_sensor_obj.Deinit();
         if(SUCCESS == s32_return_value)
         {
-            b_initialized = false;
-            LOG_INFO("De-Initialization Succeeded.\r\n");
+            s32_return_value = temp_actuator_obj.Deinit();
+            if(SUCCESS == s32_return_value)
+            {
+                b_initialized = false;
+                LOG_INFO("De-Initialization Succeeded.\r\n");
+            }
+            else
+            {
+                LOG_ERROR("De-Initialization Failed (temp actuator) with error %d\r\n", s32_return_value);
+            }
         }
         else
         {
-            LOG_ERROR("De-Initialization Failed with error %d\r\n", s32_return_value);
+            LOG_ERROR("De-Initialization Failed (temp sensor) with error %d\r\n", s32_return_value);
         }
     }
     else
