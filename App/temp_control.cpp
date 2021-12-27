@@ -45,7 +45,7 @@
  *  @param _temp_sensor_obj reference to temp_sensor object to be used by this class
  *  @return None
 */
-temp_control::temp_control(temp_sensor& _temp_sensor_obj) : temp_sensor_obj(_temp_sensor_obj)
+TempControl::TempControl(TempSensor& _temp_sensor_obj) : temp_sensor_obj(_temp_sensor_obj)
 {
     b_initialized = false;
     s32_min_temp = 0;
@@ -57,13 +57,13 @@ temp_control::temp_control(temp_sensor& _temp_sensor_obj) : temp_sensor_obj(_tem
  *  @return TEMP_CONTROL_SUCCESS for success 
  *          Otherwise refer to @ref Return Values
 */
-int32_t temp_control::init(void)
+int32_t TempControl::Init(void)
 {
     int32_t s32_return_value = ERROR_DEFAULT;
     if(!b_initialized)
     {
         /* TODO: initialization sequence */
-        s32_return_value = temp_sensor_obj.init();
+        s32_return_value = temp_sensor_obj.Init();
         if(SUCCESS == s32_return_value)
         {
             b_initialized = true;
@@ -88,14 +88,14 @@ int32_t temp_control::init(void)
  *  @return TEMP_CONTROL_SUCCESS for success 
  *          Otherwise refer to @ref Return Values
 */
-int32_t temp_control::deinit(void)
+int32_t TempControl::Deinit(void)
 {
     int32_t s32_return_value = ERROR_DEFAULT;
     if(b_initialized)
     {
         /* TODO: deinitialization sequence */
 
-        s32_return_value = temp_sensor_obj.deinit();
+        s32_return_value = temp_sensor_obj.Deinit();
         if(SUCCESS == s32_return_value)
         {
             b_initialized = false;
@@ -126,7 +126,7 @@ int32_t temp_control::deinit(void)
  *  @return TEMP_CONTROL_SUCCESS for success 
  *          Otherwise refer to @ref Return Values
 */
-int32_t temp_control::set_min_max_temp(int32_t s32_min_val, int32_t s32_max_val)
+int32_t TempControl::SetMinMaxTemp(int32_t s32_min_val, int32_t s32_max_val)
 {
     int32_t s32_return_value = ERROR_DEFAULT;
 
@@ -159,7 +159,7 @@ int32_t temp_control::set_min_max_temp(int32_t s32_min_val, int32_t s32_max_val)
  *  @param void
  *  @return void
 */
-void temp_control::dispatch(void)
+void TempControl::Dispatch(void)
 {
     /* read temperature */
     /* read current action */

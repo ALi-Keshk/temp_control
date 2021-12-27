@@ -22,20 +22,20 @@
 /*                 Class Declaration                   */
 /*******************************************************/
 
-class temp_control
+class TempControl
 {
 private:
     bool b_initialized;
     int32_t s32_min_temp;
     int32_t s32_max_temp;
-    temp_sensor& temp_sensor_obj;
+    TempSensor& temp_sensor_obj;
 
 public:
     /** @brief The constructor to the temp_control module.
      *  @param _temp_sensor_obj reference to temp_sensor object to be used by this class
      *  @return None
     */
-    temp_control(temp_sensor& _temp_sensor_obj);
+    TempControl(TempSensor& _temp_sensor_obj);
 
 
     /** @brief Initializes the temp_control module.
@@ -43,14 +43,14 @@ public:
      *  @return TEMP_CONTROL_SUCCESS for success 
      *          Otherwise refer to @ref Return Values
     */
-    int32_t init(void);
+    int32_t Init(void);
 
     /** @brief De-initializes the temp_control module.
      *  @param void
      *  @return TEMP_CONTROL_SUCCESS for success 
      *          Otherwise refer to @ref Return Values
     */
-    int32_t deinit(void);
+    int32_t Deinit(void);
 
     /** @brief  Adjusts the required minimum and maximum values of the temperature.
      *  @note   The maximum temperature value must be >= the Minmum temperature value.
@@ -59,14 +59,14 @@ public:
      *  @return TEMP_CONTROL_SUCCESS for success.
      *          TEMP_CONTROL_ERR_INV_INPUTS if s32_max_val < s32_min_val.
     */
-    int32_t set_min_max_temp(int32_t s32_min_val, int32_t s32_max_val);
+    int32_t SetMinMaxTemp(int32_t s32_min_val, int32_t s32_max_val);
 
 
     /** @brief Run the temp_control module dispatcher to handle events.
      *  @param void
      *  @return void
     */
-    void dispatch(void);
+    void Dispatch(void);
 
 };
 

@@ -21,7 +21,7 @@
 /*                 Class Declaration                   */
 /*******************************************************/
 
-class temp_sensor
+class TempSensor
 {
 public:
     /** @brief Initializes the temp_sensor module.
@@ -29,7 +29,7 @@ public:
      *  @return TEMP_SENSOR_SUCCESS for success 
      *          Otherwise refer to @ref Return Values
     */
-    virtual int32_t init(void)
+    virtual int32_t Init(void)
     {
         return SUCCESS;
     }
@@ -38,7 +38,7 @@ public:
      *  @return TEMP_SENSOR_SUCCESS for success 
      *          Otherwise refer to @ref Return Values
     */
-    virtual int32_t deinit(void)
+    virtual int32_t Deinit(void)
     {
         return SUCCESS;
     }
@@ -48,7 +48,7 @@ public:
      *  @return TEMP_SENSOR_SUCCESS for success.
      *          Otherwise refer to @ref Return Values
     */
-    virtual int32_t get_temp(int32_t * ps32_temp_value)
+    virtual int32_t GetTemp(int32_t * ps32_temp_value)
     {
         return SUCCESS;
     }
@@ -58,7 +58,7 @@ public:
      *  @param void
      *  @return void
     */
-    virtual void dispatch(void)
+    virtual void Dispatch(void)
     {
         return;
     }

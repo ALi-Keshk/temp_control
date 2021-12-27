@@ -7,61 +7,59 @@
 using ::testing::AtLeast;
 using ::testing::Return;
 
-class Mock_temp_sensor: public temp_sensor
+class MockTempSensor: public TempSensor
 {
 public:
-    MOCK_METHOD(int32_t, init, (), (override));
-    MOCK_METHOD(int32_t, deinit, (), (override));
-    MOCK_METHOD(int32_t, get_temp, (int32_t * ps32_temp_value), (override));
+    MOCK_METHOD(int32_t, Init, (), (override));
+    MOCK_METHOD(int32_t, Deinit, (), (override));
+    MOCK_METHOD(int32_t, GetTemp, (int32_t * ps32_temp_value), (override));
 };
 
 
-struct temp_control_test : public ::testing::Test
+class TempControlTest : public ::testing::Test
 {
-    Mock_temp_sensor mocked_temp_sensor_obj;
-    temp_control temp_control_obj;
+protected:
+    MockTempSensor mocked_temp_sensor_obj;
+    TempControl temp_control_obj;
 
-    temp_control_test() : temp_control_obj(mocked_temp_sensor_obj)
-    {
-        
-    }
+    TempControlTest() : temp_control_obj(mocked_temp_sensor_obj){}
 
 
     virtual void SetUp() override
     {
-        EXPECT_CALL(mocked_temp_sensor_obj, init()).
+        EXPECT_CALL(mocked_temp_sensor_obj, Init()).
         Times(1).WillOnce(Return(SUCCESS));
 
         /* Initialize the module */
-        ASSERT_EQ(SUCCESS, temp_control_obj.init());
+        ASSERT_EQ(SUCCESS, temp_control_obj.Init());
     }
 
     virtual void TearDown() override
     {
-        EXPECT_CALL(mocked_temp_sensor_obj, deinit()).
+        EXPECT_CALL(mocked_temp_sensor_obj, Deinit()).
         Times(1).WillOnce(Return(SUCCESS));
 
         /* De-initialize the module */
-        ASSERT_EQ(SUCCESS, temp_control_obj.deinit());
+        ASSERT_EQ(SUCCESS, temp_control_obj.Deinit());
     }
 };
 
-TEST_F(temp_control_test, set_min_max_temp_test)
+TEST_F(TempControlTest, SetMinMaxT)
 {
     /* Test valid +ve values */
-    EXPECT_EQ(SUCCESS, temp_control_obj.set_min_max_temp(20, 30));
-    EXPECT_EQ(SUCCESS, temp_control_obj.set_min_max_temp(20, 20));
+    EXPECT_EQ(SUCCESS, temp_control_obj.SetMinMaxTemp(20, 30));
+    EXPECT_EQ(SUCCESS, temp_control_obj.SetMinMaxTemp(20, 20));
 
     /* Test valid -ve values */
-    EXPECT_EQ(SUCCESS, temp_control_obj.set_min_max_temp(-2, -1));
-    EXPECT_EQ(SUCCESS, temp_control_obj.set_min_max_temp(-2, -2));
+    EXPECT_EQ(SUCCESS, temp_control_obj.SetMinMaxTemp(-2, -1));
+    EXPECT_EQ(SUCCESS, temp_control_obj.SetMinMaxTemp(-2, -2));
 
     /* Test valid 0 values */
-    EXPECT_EQ(SUCCESS, temp_control_obj.set_min_max_temp(0, 0));
+    EXPECT_EQ(SUCCESS, temp_control_obj.SetMinMaxTemp(0, 0));
     
     /* Test invalid +ve values */
-    EXPECT_EQ(ERROR_INV_INPUTS, temp_control_obj.set_min_max_temp(30, 20));
+    EXPECT_EQ(ERROR_INV_INPUTS, temp_control_obj.SetMinMaxTemp(30, 20));
 
     /* Test invalid -ve values */
-    EXPECT_EQ(ERROR_INV_INPUTS, temp_control_obj.set_min_max_temp(-1, -2));
+    EXPECT_EQ(ERROR_INV_INPUTS, temp_control_obj.SetMinMaxTemp(-1, -2));
 }
