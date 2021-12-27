@@ -33,6 +33,12 @@ private:
     TempSensor& temp_sensor_obj;
     TempActuator& temp_actuator_obj;
 
+    /** @brief Calculate the required action.
+     *  @param s32_current_temp the current temperature value
+     *  @return the requied action
+    */
+    TempActuator::eTempActuatorAction CalculateAction(int32_t s32_current_temp);
+
 public:
     /** @brief The constructor to the temp_control module.
      *  @param _temp_sensor_obj reference to temp_sensor object to be used by this class
@@ -43,14 +49,14 @@ public:
 
     /** @brief Initializes the temp_control module.
      *  @param void
-     *  @return TEMP_CONTROL_SUCCESS for success 
+     *  @return SUCCESS for success 
      *          Otherwise refer to @ref Return Values
     */
     int32_t Init(void);
 
     /** @brief De-initializes the temp_control module.
      *  @param void
-     *  @return TEMP_CONTROL_SUCCESS for success 
+     *  @return SUCCESS for success 
      *          Otherwise refer to @ref Return Values
     */
     int32_t Deinit(void);
@@ -59,17 +65,19 @@ public:
      *  @note   The maximum temperature value must be >= the Minmum temperature value.
      *  @param  s32_min_val Minimum temperature value
      *  @param  s32_max_val Maximum temperature value
-     *  @return TEMP_CONTROL_SUCCESS for success.
-     *          TEMP_CONTROL_ERR_INV_INPUTS if s32_max_val < s32_min_val.
+     *  @return SUCCESS for success.
+     *          ERROR_INV_INPUTS if s32_max_val < s32_min_val.
     */
     int32_t SetMinMaxTemp(int32_t s32_min_val, int32_t s32_max_val);
 
 
-    /** @brief Run the temp_control module dispatcher to handle events.
+    /** @brief calculate and update the current state required.
+     *  @note Call this method periodically (every 10 min for example) to update the current module state.
      *  @param void
-     *  @return void
+     *  @return SUCCESS for success 
+     *          Otherwise refer to @ref Return Values
     */
-    void Dispatch(void);
+    int32_t Update(void);
 
 };
 

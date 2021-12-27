@@ -26,10 +26,18 @@ class TempActuator
 public:
     enum eTempActuatorAction
     {
-        ACTION_IDLE = 0,
-        ACTION_STOP,
+        ACTION_STOP = 0,
         ACTION_COOL,
-        ACTION_HEAT
+        ACTION_HEAT,
+        ACTION_INVALID
+    };
+
+    enum eTempActuatorStatus
+    {
+        STATUS_IDLE = 0,
+        STATUS_COOLING,
+        STATUS_HEATING,
+        STATUS_INVALID
     };
 
     /** @brief Initializes the TempActuator class.
@@ -61,12 +69,12 @@ public:
         return SUCCESS;
     }
 
-    /** @brief  return the current action.
-     *  @param  e_action reference to enum to hold the current action.
+    /** @brief  return the current status.
+     *  @param  e_action reference to enum to hold the current status.
      *  @return SUCCESS for success.
      *          Otherwise refer to @ref Return Values
     */
-    virtual int32_t GetAction(eTempActuatorAction& e_action)
+    virtual int32_t GetStatus(eTempActuatorStatus& e_status)
     {
         return SUCCESS;
     }
