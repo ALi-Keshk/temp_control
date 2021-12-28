@@ -3,7 +3,7 @@
 /*                 Includes                            */
 /*******************************************************/
 #include "temp_control.hpp"
-#include "error_numbers.h"
+#include "error_numbers.hpp"
 #include <cstdio>
 
 /*******************************************************/

@@ -1,7 +1,7 @@
 #include "temp_control.hpp"
 #include <gtest/gtest.h>
 #include "gmock/gmock.h"
-#include "error_numbers.h"
+#include "error_numbers.hpp"
 
 
 using ::testing::AtLeast;

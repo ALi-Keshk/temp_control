@@ -6,7 +6,7 @@
 /*                 Includes                            */
 /*******************************************************/
 #include <stdint.h>
-#include "error_numbers.h"
+#include "error_numbers.hpp"
 
 /*******************************************************/
 /*                 MACROS                              */

@@ -6,7 +6,7 @@
 /*                 Includes                            */
 /*******************************************************/
 #include <stdint.h>
-#include "error_numbers.h"
+#include "error_numbers.hpp"
 #include "temp_sensor.hpp"
 #include "temp_actuator.hpp"
 
