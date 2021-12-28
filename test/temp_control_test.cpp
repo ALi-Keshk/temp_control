@@ -1,7 +1,12 @@
+
+/*******************************************************/
+/*                 Includes                            */
+/*******************************************************/
 #include "temp_control.hpp"
 #include <gtest/gtest.h>
 #include "gmock/gmock.h"
 #include "error_numbers.hpp"
+
 
 
 using ::testing::AtLeast;
@@ -10,12 +15,16 @@ using ::testing::DoAll;
 using ::testing::SetArgReferee;
 using ::testing::_;
 
+/*******************************************************/
+/*                Mock classes                         */
+/*******************************************************/
 class MockTempSensor: public TempSensor
 {
 public:
     MOCK_METHOD(int32_t, Init, (), (override));
     MOCK_METHOD(int32_t, Deinit, (), (override));
     MOCK_METHOD(int32_t, GetTemp, (int32_t& s32_temp_value), (override));
+    MOCK_METHOD(void, Dispatch, (), (override));
 };
 
 class MockTempActuator: public TempActuator
@@ -25,9 +34,13 @@ public:
     MOCK_METHOD(int32_t, Deinit, (), (override));
     MOCK_METHOD(int32_t, GetStatus, (eTempActuatorStatus& e_status), (override));
     MOCK_METHOD(int32_t, TakeAction, (eTempActuatorAction e_action), (override));
+    MOCK_METHOD(void, Dispatch, (), (override));
 };
 
 
+/*******************************************************/
+/*                Test Fixture class                   */
+/*******************************************************/
 class TempControlTest : public ::testing::Test
 {
 protected:
@@ -63,7 +76,13 @@ protected:
     }
 };
 
-TEST_F(TempControlTest, SetMinMaxT)
+
+/*******************************************************/
+/*                      Tests                          */
+/*******************************************************/
+
+/* Test for method SetMinMaxTemp with +ve, -ve and zero values */
+TEST_F(TempControlTest, SetMinMax)
 {
     /* Test valid +ve values */
     EXPECT_EQ(SUCCESS, temp_control_obj.SetMinMaxTemp(20, 30));
@@ -84,8 +103,10 @@ TEST_F(TempControlTest, SetMinMaxT)
 }
 
 
+/* Test for method Update when Tmax > Tmin */
 TEST_F(TempControlTest, UpdateTmaxGreatherThanTmin)
 {
+    /* set Tmax and Tmin */
     ASSERT_EQ(SUCCESS, temp_control_obj.SetMinMaxTemp(20, 30));
 
     /* Test current temperature > Tmax */
@@ -138,9 +159,10 @@ TEST_F(TempControlTest, UpdateTmaxGreatherThanTmin)
     EXPECT_EQ(SUCCESS, temp_control_obj.Update());
 }
 
-
+/* Test for method Update when Tmax = Tmin = T */
 TEST_F(TempControlTest, UpdateTmaxEqualTmin)
 {
+    /* set Tmax and Tmin */
     ASSERT_EQ(SUCCESS, temp_control_obj.SetMinMaxTemp(20, 20));
 
     /* Test current temperature > T */
