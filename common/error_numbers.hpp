@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __ERROR_NUMBERS__
+#define __ERROR_NUMBERS__
 
 /*******************************************************/
 /*                 MACROS                              */
@@ -13,3 +14,4 @@
 #define ERROR_NOT_INITALIZED        (-3)
 #define ERROR_ALREADY_INITALIZED    (-4)
 
+#endif  /* __ERROR_NUMBERS__ */
