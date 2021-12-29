@@ -15,22 +15,28 @@
 /* TODO: Support levels for logging and log errors to standard error*/
 
 /* comment this line to disable logging */
-//#define LOGGING_ENABLED
+#define LOGGING_ENABLED
 
 #ifdef LOGGING_ENABLED
 /* Default log function */
-#define LOG(msg, ...)           printf("[TEMP_CTRL]: " msg, __VA_ARGS__)
+#define LOG            printf
 /* Log information in Blue */
-#define LOG_INFO(msg, ...)      printf("\u001b[34m" "[TEMP_CTRL: INFO]: " msg "\u001b[0m", __VA_ARGS__)
+#define LOG_INFO(...)       LOG("\u001b[34m" "[TEMP_CTRL: INFO]: ");\
+                            LOG(__VA_ARGS__);\
+                            LOG("\u001b[0m")
 /* Log Warnings in yelow */
-#define LOG_WARNING(msg, ...)   printf("\u001b[33m" "[TEMP_CTRL: WARNING]: " msg "\u001b[0m", __VA_ARGS__)
+#define LOG_WARNING(...)    LOG("\u001b[33m" "[TEMP_CTRL: WARNING]: ");\
+                            LOG(__VA_ARGS__);\
+                            LOG("\u001b[0m")
 /* Log Errors in Red */
-#define LOG_ERROR(msg, ...)     printf("\u001b[31m" "[TEMP_CTRL: ERROR]: " msg "\u001b[0m", __VA_ARGS__)
+#define LOG_ERROR(...)      LOG("\u001b[31m" "[TEMP_CTRL: ERROR]: ");\
+                            LOG(__VA_ARGS__);\
+                            LOG("\u001b[0m")
 #else
-#define LOG(msg, ...)
-#define LOG_INFO(msg, ...)
-#define LOG_WARNING(msg, ...)
-#define LOG_ERROR(msg, ...)
+#define LOG(...)
+#define LOG_INFO(...)
+#define LOG_WARNING(...)
+#define LOG_ERROR(...)
 #endif
 
 /*******************************************************/
