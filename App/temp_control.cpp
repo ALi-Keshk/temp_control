@@ -15,7 +15,7 @@
 /* TODO: Support levels for logging and log errors to standard error*/
 
 /* comment this line to disable logging */
-#define LOGGING_ENABLED
+//#define LOGGING_ENABLED
 
 #ifdef LOGGING_ENABLED
 /* Default log function */
