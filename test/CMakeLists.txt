@@ -17,3 +17,6 @@ add_test(
     )
 
 add_subdirectory(googletest)
+
+include(GoogleTest)
+gtest_discover_tests(${CMAKE_PROJECT_NAME})

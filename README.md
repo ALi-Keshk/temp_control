@@ -7,17 +7,15 @@
 ```
 $ git submodule update --init 
 ```
-* Create a build directory and change directory to it
-```
-$ mkdir build
-$ cd build
-```
 * Run cmake command to configure the project
 ```
-$ cmake ..
+$ cmake -S . -B build
 ```
 * Run cmake build command to build the project
 ```
-$ cmake --build .
+$ cmake --build build
 ```
-* Navigate to the test directory and run temp_control_test
+* Navigate to the build directory and run ctest
+```
+$ cd build && ctest
+```
